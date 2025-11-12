@@ -4,18 +4,22 @@ export const appendMetaId = (id) => {
     const meta = document.createElement('meta');
     meta.id = id;
     head.appendChild(meta);
-}
+};
 
 // Only for debugging.
 export const dlc = (output) => {
     // TODO: use test_log_console to control logging
     if (output?.trim()) console.info(`GCAssist: ${output}`);
-}
+};
 
 // Console error log.
 export const logError = (module = 'Unknown Module', error = {}) => {
     const { message = 'No message', stack = '', stacktrace = '' } = error;
-    const error_msg = `GCAssist_ERROR - ${module} - ${window.location.href}: ${message}` + "\nStacktrace:\n" + stack + (stacktrace ? ("\n" + stacktrace) : "");
+    const error_msg =
+        `GCAssist_ERROR - ${module} - ${window.location.href}: ${message}` +
+        '\nStacktrace:\n' +
+        stack +
+        (stacktrace ? '\n' + stacktrace : '');
     console?.error(error_msg);
     // else if (typeof (GM_log) != "undefined") GM_log(txt);
     // if (settings_gclherror_alert) {
@@ -28,4 +32,4 @@ export const logError = (module = 'Unknown Module', error = {}) => {
     //     }
     //     $("#gclh-gurumeditation > div > div").append( "<p>"+modul + ": " + err.message+"</p>");
     // }
-}
+};

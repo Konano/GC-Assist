@@ -95,11 +95,11 @@ export const mainGCInit = () => {
             }
         }
 
-        if ([user_me, user_avatarUrl, user_locale, user_findCount].every(v => v !== false)) {
+        if ([user_me, user_avatarUrl, user_locale, user_findCount].every((v) => v !== false)) {
             dlc('All global user data found');
             dlc(`- username: ${user_me} / avatarUrl: ${user_avatarUrl}`);
             dlc(`- findCount: ${user_findCount} / locale: ${user_locale} / isBasic: ${user_isBasic}`);
-            // mainGC();
+            mainGC();
         } else if (waitCount < 200) {
             setTimeout(() => waitingForUserData(waitCount + 1), 50);
         } else {
@@ -111,4 +111,8 @@ export const mainGCInit = () => {
 
     dlc('START waitingForUserData');
     waitingForUserData();
-}
+};
+
+const mainGC = () => {
+    dlc('START mainGC');
+}; // End of mainGC.
