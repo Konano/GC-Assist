@@ -7,7 +7,6 @@ const metaBanner = `
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/Konano/GC-Assist/issues
 // @namespace    https://github.com/Konano
-// @charset      UTF-8
 // @run-at       document-end
 // @match        https://www.geocaching.com/geocache/*
 // @grant        none
