@@ -13,6 +13,30 @@ const metaBanner = `
 // ==/UserScript==
 `;
 
+function stripComments() {
+    return {
+        name: 'strip-comments',
+        renderChunk(code) {
+            const withoutComments = code
+                .replace(/(^|\s)\/\/.*$/gm, (match, prefix) => {
+                    // prefix 是匹配到的前导字符（行首或空白）
+                    // 如果是行首或只有空格/Tab，就删除整行注释
+                    if (/^[ \t]\s*$/.test(prefix)) {
+                        return ''; // 删除
+                    }
+                    return match; // 保留原注释
+                })
+                .replace(/^\s*[\r\n]/gm, '');
+            console.log(code.length);
+            console.log(withoutComments.length);
+            return {
+                code: withoutComments,
+                map: null,
+            };
+        },
+    };
+}
+
 module.exports = {
     input: 'src/main.js',
     output: {
@@ -21,5 +45,6 @@ module.exports = {
         // format: 'esm',
         name: 'GCAssist',
         banner: metaBanner.trimStart(),
-    }
+    },
+    plugins: [stripComments()],
 };
