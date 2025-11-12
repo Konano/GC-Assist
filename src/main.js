@@ -4,33 +4,39 @@ import { appendMetaId, dlc } from './utils.js';
 const main = (t) => {
     checksBeforeRunning();
     // setTestLogConsole();
-    // quitOnAdFrames()
-    //     .then(function () { return jqueryInit(t); })
-    //     .then(function () { return browserInit(t); })
-    //     .then(function () { return constInit(t); })
-    //     .then(function () { return variablesInit(t); })
-    //     .done(function () {
-    //         function checkBodyContent(waitCount) {
-    //             if ($('body').children().length > 1 || ($('body').children().length == 1 && document.location.href.match(/^https:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/))) {
-    //                 tlc('BodyContent found');
-    //                 if (document.location.href.match(/^https:\/\/maps\.google\./) || document.location.href.match(/^https:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
-    //                     mainGMaps();
-    //                 } else if (document.location.href.match(/^https:\/\/www\.google\.[a-zA-Z.]*\/search/)) {
-    //                     mainGSearch();
-    //                 } else if (document.location.href.match(/^https:\/\/www\.openstreetmap\.org/)) {
-    //                     mainOSM();
-    //                 } else if (document.location.href.match(/^https:\/\/www\.geocaching\.com/)) {
-    //                     mainGCWait();
-    //                 } else if (document.location.href.match(/^https:\/\/project-gc\.com\/Tools\/PQSplit/)) {
-    //                     mainPGC();
-    //                 } else if (document.location.href.match(/^https:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/)) {
-    //                     mainCertitudes();
-    //                 }
-    //             } else { waitCount++; if (waitCount <= 5000) setTimeout(function () { checkBodyContent(waitCount); }, 10); }
-    //         }
-    //         dlc('START checkBodyContent');
-    //         checkBodyContent(0);
-    //     });
+    quitOnAdFrames()
+        // .then(function () { return jqueryInit(t); })
+        // .then(function () { return browserInit(t); })
+        // .then(function () { return constInit(t); })
+        // .then(function () { return variablesInit(t); })
+        .then(() => {
+            const checkBodyContent = (waitCount = 0) => {
+                // if (bodyChildren > 1 || (bodyChildren == 1 && url.match(/^https:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/))) {
+                if ($('body').children().length > 1) {
+                    dlc('BodyContent found');
+                    const url = document.location.href;
+                    dlc(`URL: ${url}`);
+                    /* if (url.match(/^https:\/\/maps\.google\./) || url.match(/^https:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
+                        mainGMaps();
+                        } else if (url.match(/^https:\/\/www\.google\.[a-zA-Z.]*\/search/)) {
+                            mainGSearch();
+                        } else if (url.match(/^https:\/\/www\.openstreetmap\.org/)) {
+                            mainOSM();
+                    } else */
+                    //  if (url.match(/^https:\/\/www\.geocaching\.com/)) {
+                    //     mainGCWait();
+                    //     // } else if (url.match(/^https:\/\/project-gc\.com\/Tools\/PQSplit/)) {
+                    //     //     mainPGC();
+                    //     // } else if (url.match(/^https:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/)) {
+                    //     //     mainCertitudes();
+                    // }
+                } else {
+                    if (waitCount <= 5000) setTimeout(() => checkBodyContent(waitCount + 1), 10);
+                }
+            }
+            dlc('START checkBodyContent');
+            checkBodyContent(0);
+        });
 }
 
 // Checks before running the main function.
@@ -65,18 +71,17 @@ const checksBeforeRunning = () => {
 // };
 
 // Quit on Ad Frames.
-const quitOnAdFrames = (t) => {
+const quitOnAdFrames = () => {
     dlc('START quitOnAdFrames');
-    var quitOnAdFramesDeref = new jQuery.Deferred();
-    if (window.name) {
-        if (window.name.substring(0, 18) !== 'google_ads_iframe_')
-            quitOnAdFramesDeref.resolve();
-        else quitOnAdFramesDeref.reject();
-    } else {
-        quitOnAdFramesDeref.resolve();
-    }
-    return quitOnAdFramesDeref.promise();
-}
+    return new Promise((resolve, reject) => {
+        const { name } = window;
+        if (!name || !name) {
+            resolve();
+        } else {
+            reject();
+        }
+    });
+};
 
 main(globalThis);
 dlc('GCAssist main.js loaded.');
