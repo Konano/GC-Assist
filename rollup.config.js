@@ -17,7 +17,7 @@ const metaBanner = `
 module.exports = {
     input: 'src/main.js',
     output: {
-        file: 'gc_assist.user.js',
+        file: 'geocaching-assist.user.js',
         format: 'iife',
         // format: 'esm',
         name: 'GCAssist',
