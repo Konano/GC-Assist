@@ -1,0 +1,7 @@
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true, // 保存时自动格式化
+    "prettier.singleQuote": true, // 使用单引号
+    "prettier.semi": true, // 语句末尾加分号
+    "prettier.tabWidth": 4 // 缩进 4 个空格
+}
