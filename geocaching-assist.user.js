@@ -128,25 +128,25 @@
     const showThumbnails = () => {
         try {
             const placeToolTip = (element, stop) => {
-                $('a.ast_thumb:hover span').position({
+                $('a.ga_thumb_img:hover span').position({
                     my: 'center bottom',
                     at: 'center top',
-                    of: 'a.ast_thumb:hover',
+                    of: 'a.ga_thumb_img:hover',
                     collision: 'flipfit flipfit',
                 });
                 if (!stop) {
-                    $('a.ast_thumb:hover span img').on('load', () => placeToolTip(element, true));
+                    $('a.ga_thumb_img:hover span img').on('load', () => placeToolTip(element, true));
                 }
             };
             function buildThumb(href, title, showName, topSp) {
                 const hrefLarge = /\/large\//.test(href) ? href : href.replace(/\/cache\//, '/cache/large/');
-                link.classList.add('ast_thumb');
+                link.classList.add('ga_thumb_img');
                 link.href = hrefLarge.replace(/\/large\//, '/');
                 link.onmouseover = placeToolTip;
                 let html = `<img src="${hrefLarge.replace(/\/large\//, '/thumb/')}" title="${title}">`;
                 if (showName) html += `<br>${title}`;
                 const thumbLarge = hrefLarge.replace(/\/large\//, '/thumb/large/');
-                html += `<span>#top#<img class="ast_max" src="${thumbLarge}" /><br>#bot#</span>`;
+                html += `<span>#top#<img class="ga_large_img" src="${thumbLarge}" /><br>#bot#</span>`;
                 html = html.replace('#top#', '').replace('#bot#', title);
                 link.innerHTML = html;
             }
@@ -154,22 +154,22 @@
             if (isPage('cache_listing') && !isMemberInPmoCache()) {
                 if (true) {
                     let newImTpl =
-                        "<a class='tb_images lnk ast_thumb' onmouseover='placeToolTip;' rel='fb_images_${LogID}' href='https://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>" +
+                        "<a class='tb_images lnk ga_thumb_img' onmouseover='placeToolTip;' rel='fb_images_${LogID}' href='https://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>" +
                         "<img title='${Name}' alt='${Name}' src='https://img.geocaching.com/cache/log/thumb/${FileName}'/> " +
-                        "<span title=''>#top#<img title='${Descr}' class='ast_max' src='https://img.geocaching.com/cache/log/thumb/large/${FileName}'><br>#bot#</span>" +
+                        "<span title=''>#top#<img title='${Descr}' class='ga_large_img' src='https://img.geocaching.com/cache/log/thumb/large/${FileName}'><br>#bot#</span>" +
                         '</a>';
                     newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
                     const code = `
-                    function ast_updateTmpl(waitCount) {
+                    function ga_updateTmpl(waitCount) {
                     if (typeof $ !== 'undefined' && typeof $.template !== 'undefined') {
                         delete $.template['tmplCacheLogImages'];
                         $.template("tmplCacheLogImages", "${newImTpl}");
                     } else {
                         waitCount++;
-                        if (waitCount <= 50) setTimeout(() => ast_updateTmpl(waitCount), 200);
+                        if (waitCount <= 50) setTimeout(() => ga_updateTmpl(waitCount), 200);
                     }
                     }
-                    ast_updateTmpl(0);
+                    ga_updateTmpl(0);
                     ${placeToolTip.toString()}
                 `;
                     injectPageScript(code, 'body');
@@ -179,15 +179,15 @@
                 links.each((i, link) => buildThumb(link, link.href, link.innerHTML, true, '-70px'));
             }
             css += `
-        a.ast_thumb:hover { white-space: unset; position: relative; }
-        a.ast_thumb { overflow: visible !important; display: unset !important; max-width: none !important; }
+        a.ga_thumb_img:hover { white-space: unset; position: relative; }
+        a.ga_thumb_img { overflow: visible !important; display: unset !important; max-width: none !important; }
         /* Limit anchor width to its intrinsic content (image + optional caption) inside flex column */
-        .LogImagesTable a.ast_thumb { display: inline-block !important; width: auto !important; max-width: none !important; align-self: flex-start; }
-        a.ast_thumb span { white-space: unset !important; visibility: hidden; position: absolute; top: -310px; left: 0px; padding: 2px; text-decoration: none; text-align: left; vertical-align: top; }
-        a.ast_thumb:hover span { visibility: visible; z-index: 9999; border: 1px solid #8c9e65; background-color: #dfe1d2; text-decoration: none !important; }
-        a.ast_thumb:hover img { margin-bottom: -4px; }
-        a.ast_thumb img { margin-bottom: -4px; height: 75px; }
-        .ast_max { height: unset !important; vertical-align: unset !important; margin-right: 0 !important; max-height: ${settings_hover_image_max_size}px; max-width: ${settings_hover_image_max_size}px; }
+        .LogImagesTable a.ga_thumb_img { display: inline-block !important; width: auto !important; max-width: none !important; align-self: flex-start; }
+        a.ga_thumb_img span { white-space: unset !important; visibility: hidden; position: absolute; top: -310px; left: 0px; padding: 2px; text-decoration: none; text-align: left; vertical-align: top; }
+        a.ga_thumb_img:hover span { visibility: visible; z-index: 9999; border: 1px solid #8c9e65; background-color: #dfe1d2; text-decoration: none !important; }
+        a.ga_thumb_img:hover img { margin-bottom: -4px; }
+        a.ga_thumb_img img { margin-bottom: -4px; height: 75px; }
+        .ga_large_img { height: unset !important; vertical-align: unset !important; margin-right: 0 !important; max-height: ${settings_hover_image_max_size}px; max-width: ${settings_hover_image_max_size}px; }
         .Clear.LogContent.markdown-output { overflow: visible !important; }
         .Clear.LogContent.markdown-output .LogImagesTable { overflow: visible !important; }
         `;

@@ -27,8 +27,6 @@ function stripComments() {
                     return match; // 保留原注释
                 })
                 .replace(/^\s*[\r\n]/gm, '');
-            console.log(code.length);
-            console.log(withoutComments.length);
             return {
                 code: withoutComments,
                 map: null,

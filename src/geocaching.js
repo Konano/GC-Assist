@@ -13,7 +13,7 @@ export const mainGCInit = () => {
     //             if ($('.login-with-facebook')[0]) $('.login-with-facebook')[0].style.display = "none";
     //             if ($('.horizontal-rule')[0]) $('.horizontal-rule')[0].style.display = "none";
     //             if ($('.oauth-providers-login')[0]) $('.oauth-providers-login')[0].style.display = "none";
-    //         } catch(e) {ast_error("Hide Facebook",e);}
+    //         } catch(e) {ga_error("Hide Facebook",e);}
     //     }
 
     // // Improve print page cache listing.
@@ -45,7 +45,7 @@ export const mainGCInit = () => {
     //             if ($('#Footer')[0]) $('#Footer')[0].remove();
     //             // Display listing images in maximum available width for FF and chrome. Only for display, print was ok.
     //             appendCssStyle('.item-content img {max-width: -moz-available; max-width: -webkit-fill-available;}');
-    //         } catch(e) {ast_error("Improve print page cache listing",e);}
+    //         } catch(e) {ga_error("Improve print page cache listing",e);}
     //     }
 
     // Set global user data and check if logged in.
@@ -127,20 +127,20 @@ const showThumbnails = () => {
     // if (settings_show_thumbnails) {
     try {
         const placeToolTip = (element, stop) => {
-            $('a.ast_thumb:hover span').position({
+            $('a.ga_thumb_img:hover span').position({
                 my: 'center bottom',
                 at: 'center top',
-                of: 'a.ast_thumb:hover',
+                of: 'a.ga_thumb_img:hover',
                 collision: 'flipfit flipfit',
             });
 
             if (!stop) {
-                $('a.ast_thumb:hover span img').on('load', () => placeToolTip(element, true));
+                $('a.ga_thumb_img:hover span img').on('load', () => placeToolTip(element, true));
             }
         };
         function buildThumb(href, title, showName, topSp) {
             const hrefLarge = /\/large\//.test(href) ? href : href.replace(/\/cache\//, '/cache/large/');
-            link.classList.add('ast_thumb');
+            link.classList.add('ga_thumb_img');
             link.href = hrefLarge.replace(/\/large\//, '/');
             link.onmouseover = placeToolTip;
 
@@ -149,7 +149,7 @@ const showThumbnails = () => {
 
             const thumbLarge = hrefLarge.replace(/\/large\//, '/thumb/large/');
 
-            html += `<span>#top#<img class="ast_max" src="${thumbLarge}" /><br>#bot#</span>`;
+            html += `<span>#top#<img class="ga_large_img" src="${thumbLarge}" /><br>#bot#</span>`;
             // TODO: use settings_show_thumbnails to enable/disable caption on top
             // if (settings_imgcaption_on_top) html = html.replace('#top#', title).replace('#bot#', '');
             // else html = html.replace('#top#', '').replace('#bot#', title);
@@ -166,7 +166,7 @@ const showThumbnails = () => {
             //             topSp +
             //             '; left: -5px; font-size: 11px; line-height: 0;'
             //     );
-            //     links[i].childNodes[0].src = urlImages + 'ast_logo.png';
+            //     links[i].childNodes[0].src = urlImages + 'ga_logo.png';
             //     links[i].childNodes[0].style.opacity = '0.05';
             //     if (showName) links[i].childNodes[3].remove();
             //     else links[i].childNodes[1].remove();
@@ -182,25 +182,25 @@ const showThumbnails = () => {
             if (true) {
                 // if (settings_load_logs_with_gclh) {  // TODO: setting to enable/disable this function
                 let newImTpl =
-                    "<a class='tb_images lnk ast_thumb' onmouseover='placeToolTip;' rel='fb_images_${LogID}' href='https://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>" +
+                    "<a class='tb_images lnk ga_thumb_img' onmouseover='placeToolTip;' rel='fb_images_${LogID}' href='https://img.geocaching.com/cache/log/${FileName}' title='<span class=&quot;LogImgTitle&quot;>${Name} &nbsp;</span><span class=&quot;LogImgLink&quot;> <a target=&quot;_blank&quot; href=&quot;/seek/log.aspx?LID=${LogID}&amp;IID=${ImageGuid}&quot;>View Log</a></span><br><span class=&quot;LogImgDescription&quot;>${Descr}</span>'>" +
                     "<img title='${Name}' alt='${Name}' src='https://img.geocaching.com/cache/log/thumb/${FileName}'/> " +
-                    "<span title=''>#top#<img title='${Descr}' class='ast_max' src='https://img.geocaching.com/cache/log/thumb/large/${FileName}'><br>#bot#</span>" +
+                    "<span title=''>#top#<img title='${Descr}' class='ga_large_img' src='https://img.geocaching.com/cache/log/thumb/large/${FileName}'><br>#bot#</span>" +
                     '</a>';
                 // TODO: setting to enable/disable caption on top
                 // if (settings_imgcaption_on_top) newImTpl = newImTpl.replace('#top#', '${Name}').replace('#bot#', '');
                 // else newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
                 newImTpl = newImTpl.replace('#top#', '').replace('#bot#', '${Name}');
                 const code = `
-                    function ast_updateTmpl(waitCount) {
+                    function ga_updateTmpl(waitCount) {
                     if (typeof $ !== 'undefined' && typeof $.template !== 'undefined') {
                         delete $.template['tmplCacheLogImages'];
                         $.template("tmplCacheLogImages", "${newImTpl}");
                     } else {
                         waitCount++;
-                        if (waitCount <= 50) setTimeout(() => ast_updateTmpl(waitCount), 200);
+                        if (waitCount <= 50) setTimeout(() => ga_updateTmpl(waitCount), 200);
                     }
                     }
-                    ast_updateTmpl(0);
+                    ga_updateTmpl(0);
                     ${placeToolTip.toString()}
                 `;
                 injectPageScript(code, 'body');
@@ -232,7 +232,7 @@ const showThumbnails = () => {
 
             //     // TB Listing.
             // } else if (document.location.href.match(/\.com\/track\/details\.aspx?/)) {
-            //     css += 'a.ast_thumb img {margin-bottom: unset !important; margin-right: unset;}';
+            //     css += 'a.ga_thumb_img img {margin-bottom: unset !important; margin-right: unset;}';
             //     var links = $('.imagelist, table.Table .log_images').find('a[href*="img.geocaching.com/track/"]');
             //     for (var i = 0; i < links.length; i++) {
             //         buildThumb(links[i].href, links[i].children[0].alt, links[i].href.match(/log/) ? false : true, false);
@@ -262,19 +262,19 @@ const showThumbnails = () => {
         //     );
         //     $('div.profile-image-wrapper').remove();
         //     avatarThumbnail($('a.profile-image-wrapper')[0]);
-        //     a.href = $('a.profile-image-wrapper .ast_max')[0].src;
+        //     a.href = $('a.profile-image-wrapper .ga_large_img')[0].src;
         // }
 
         css += `
-        a.ast_thumb:hover { white-space: unset; position: relative; }
-        a.ast_thumb { overflow: visible !important; display: unset !important; max-width: none !important; }
+        a.ga_thumb_img:hover { white-space: unset; position: relative; }
+        a.ga_thumb_img { overflow: visible !important; display: unset !important; max-width: none !important; }
         /* Limit anchor width to its intrinsic content (image + optional caption) inside flex column */
-        .LogImagesTable a.ast_thumb { display: inline-block !important; width: auto !important; max-width: none !important; align-self: flex-start; }
-        a.ast_thumb span { white-space: unset !important; visibility: hidden; position: absolute; top: -310px; left: 0px; padding: 2px; text-decoration: none; text-align: left; vertical-align: top; }
-        a.ast_thumb:hover span { visibility: visible; z-index: 9999; border: 1px solid #8c9e65; background-color: #dfe1d2; text-decoration: none !important; }
-        a.ast_thumb:hover img { margin-bottom: -4px; }
-        a.ast_thumb img { margin-bottom: -4px; height: 75px; }
-        .ast_max { height: unset !important; vertical-align: unset !important; margin-right: 0 !important; max-height: ${settings_hover_image_max_size}px; max-width: ${settings_hover_image_max_size}px; }
+        .LogImagesTable a.ga_thumb_img { display: inline-block !important; width: auto !important; max-width: none !important; align-self: flex-start; }
+        a.ga_thumb_img span { white-space: unset !important; visibility: hidden; position: absolute; top: -310px; left: 0px; padding: 2px; text-decoration: none; text-align: left; vertical-align: top; }
+        a.ga_thumb_img:hover span { visibility: visible; z-index: 9999; border: 1px solid #8c9e65; background-color: #dfe1d2; text-decoration: none !important; }
+        a.ga_thumb_img:hover img { margin-bottom: -4px; }
+        a.ga_thumb_img img { margin-bottom: -4px; height: 75px; }
+        .ga_large_img { height: unset !important; vertical-align: unset !important; margin-right: 0 !important; max-height: ${settings_hover_image_max_size}px; max-width: ${settings_hover_image_max_size}px; }
         .Clear.LogContent.markdown-output { overflow: visible !important; }
         .Clear.LogContent.markdown-output .LogImagesTable { overflow: visible !important; }
         `;
@@ -290,11 +290,11 @@ const showThumbnails = () => {
     //         /img\.geocaching\.com\/user\/(avatar|display|square250)/,
     //         's3.amazonaws.com/gs-geo-images'
     //     );
-    //     img.className = 'ast_max';
+    //     img.className = 'ga_large_img';
     //     img.setAttribute('style', 'display: unset;');
     //     var span = document.createElement('span');
     //     span.appendChild(img);
-    //     link.className += ' ast_thumb';
+    //     link.className += ' ga_thumb_img';
     //     link.onmouseover = placeToolTip;
     //     link.appendChild(span);
     // }
@@ -307,11 +307,11 @@ const showThumbnails = () => {
     //         /img\.geocaching\.com\/user\/(avatar|display|square250)/,
     //         's3.amazonaws.com/gs-geo-images'
     //     );
-    //     img.className = 'ast_max';
+    //     img.className = 'ga_large_img';
     //     img.setAttribute('style', 'display: unset;');
     //     var span = document.createElement('span');
     //     span.appendChild(img);
-    //     link.className += ' ast_thumb';
+    //     link.className += ' ga_thumb_img';
     //     link.appendChild(span);
     //     link.addEventListener('mouseover', function (e) {
     //         placeToolTip(e, true);
@@ -320,7 +320,7 @@ const showThumbnails = () => {
     // function showBiggerAvatarsLink() {
     //     addButtonOverLogs(
     //         showBiggerAvatars,
-    //         'ast_show_bigger_avatars',
+    //         'ga_show_bigger_avatars',
     //         true,
     //         'Show bigger avatars',
     //         'Bigger avatars',
@@ -329,9 +329,9 @@ const showThumbnails = () => {
     // }
     // function showBiggerAvatars() {
     //     try {
-    //         if ($('#ast_show_bigger_avatars.working')[0]) return;
-    //         $('#ast_show_bigger_avatars').addClass('working');
-    //         $('#ast_show_bigger_avatars input')[0].setAttribute('disabled', '');
+    //         if ($('#ga_show_bigger_avatars.working')[0]) return;
+    //         $('#ga_show_bigger_avatars').addClass('working');
+    //         $('#ga_show_bigger_avatars input')[0].setAttribute('disabled', '');
     //         setTimeout(function () {
     //             var links = document.getElementsByClassName('logOwnerAvatar');
     //             for (var i = 0; i < links.length; i++) {
@@ -340,11 +340,11 @@ const showThumbnails = () => {
     //                     avatarThumbnail(links[i].children[0]);
     //                 }
     //             }
-    //             $('#ast_show_bigger_avatars').removeClass('working');
-    //             $('#ast_show_bigger_avatars input')[0].removeAttribute('disabled');
+    //             $('#ga_show_bigger_avatars').removeClass('working');
+    //             $('#ga_show_bigger_avatars input')[0].removeAttribute('disabled');
     //         }, 100);
     //     } catch (e) {
-    //         ast_error('showBiggerAvatars', e);
+    //         ga_error('showBiggerAvatars', e);
     //     }
     // }
     // function showBiggerAvatar() {
@@ -356,7 +356,7 @@ const showThumbnails = () => {
     //             avatarThumbnailWithoutLoad(link.children[0]);
     //         }
     //     } catch (e) {
-    //         ast_error('showBiggerAvatar', e);
+    //         ga_error('showBiggerAvatar', e);
     //     }
     // }
 };
