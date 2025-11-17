@@ -138,7 +138,7 @@
                     $('a.ga_thumb_img:hover span img').on('load', () => placeToolTip(element, true));
                 }
             };
-            function buildThumb(href, title, showName, topSp) {
+            function buildThumb(link, href, title, showName, topSp) {
                 const hrefLarge = /\/large\//.test(href) ? href : href.replace(/\/cache\//, '/cache/large/');
                 link.classList.add('ga_thumb_img');
                 link.href = hrefLarge.replace(/\/large\//, '/');
