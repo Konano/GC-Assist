@@ -2,7 +2,7 @@
 // @name         GC Assist
 // @description  A userscript to enhance the geocaching.com experience.
 // @author       Konano
-// @version      0.0.2
+// @version      0.0.3
 // @license      GNU General Public License v3.0
 // @supportURL   https://github.com/Konano/GC-Assist/issues
 // @namespace    https://github.com/Konano
@@ -188,8 +188,9 @@
         a.ga_thumb_img:hover img { margin-bottom: -4px; }
         a.ga_thumb_img img { margin-bottom: -4px; height: 75px; }
         .ga_large_img { height: unset !important; vertical-align: unset !important; margin-right: 0 !important; max-height: ${settings_hover_image_max_size}px; max-width: ${settings_hover_image_max_size}px; }
-        .Clear.LogContent.markdown-output { overflow: visible !important; }
-        .Clear.LogContent.markdown-output .LogImagesTable { overflow: visible !important; }
+        /* Allow the hover image to extend beyond the Markdown log container. */
+        .LogContent.markdown-output,
+        .LogContent.markdown-output .LogImagesTable { overflow: visible !important; }
         `;
             appendCssStyle(css);
         } catch (e) {
